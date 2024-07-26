@@ -1,0 +1,21 @@
+.selections {
+    display: flex;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+}
+
+.button{
+    background-color: blue;
+    font-size: 40px;
+}
+
+.button{
+    background-color: blue;
+    font-size: 40px;
+}
+
+.button:hover {
+    background-color: darkblue;
+    color: yellow;
+}
