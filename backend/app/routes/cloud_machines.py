@@ -23,10 +23,11 @@ def user_root():
 
 @router.get("/do_command/", response_model=None)
 def do_command(db: Session = Depends(get_db)):
-    result = subprocess.run(['microstack launch cirros -n virtu'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    # Almacenar la salida en una variable
-    output = result.stdout
-    error = result.stderr
-    print(output)
-    print(error)
-    return [output, error]
+    command = ['microstack', 'launch', 'cirros', '-n', 'virtu']
+    try:
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        print("Output:\n", result.stdout)
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        print("Error:\n", e.stderr)
+        return e.stderr
