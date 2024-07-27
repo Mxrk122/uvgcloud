@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
 from app.db import crud
+from app.schemas.cloud_machine import MachineCreate  
 import subprocess
 import uuid
 
@@ -21,9 +22,9 @@ def get_db():
 def user_root():
     return {"Hello": "Commands"}
 
-@router.get("/do_command/", response_model=None)
-def do_command(db: Session = Depends(get_db)):
-    command = ['microstack', 'launch', 'cirros', '-n', 'virtu']
+@router.get("/create_machine/", response_model=None)
+def do_command(machine: MachineCreate, db: Session = Depends(get_db)):
+    command = ['microstack', 'launch', machine.os, '-n', machine.name, "-f", machine.flavor]
     try:
         result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         print("Output:\n", result.stdout)

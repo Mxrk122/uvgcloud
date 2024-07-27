@@ -21,16 +21,39 @@ const MainPage = () => {
 
     const { user } = React.useContext(UserContext)
 
-    const [machines, setMachines] = React.useState([])
+    const [machines, setMachines] = React.useState([
+      {
+        name: "Machine A",
+        flavor: "t2.micro",
+        operatingSystem: "Ubuntu 20.04",
+        status: "running"
+      },
+      {
+        name: "Machine B",
+        flavor: "t3.medium",
+        operatingSystem: "Windows Server 2019",
+        status: "stopped"
+      },
+      {
+        name: "Machine C",
+        flavor: "m5.large",
+        operatingSystem: "CentOS 8",
+        status: "running"
+      },
+      {
+        name: "Machine D",
+        flavor: "c5.xlarge",
+        operatingSystem: "Debian 10",
+        status: "pending"
+      }
+    ])
 
     // llamar a las vms disponibles
-    useEffect(() => {
-      if (user === null){
-        navigate("/login")
-      }
-
-
-    }, [])
+    // useEffect(() => {
+    //   if (user === null){
+    //     navigate("/login")
+    //   }
+    // }, [])
 
     const handleClick = async (event) => {
       // Mandar a pedir las máquinas
@@ -39,34 +62,11 @@ const MainPage = () => {
       // });
 
       //  Example
-      const machines = [
-        {
-          name: "Machine A",
-          flavor: "t2.micro",
-          operatingSystem: "Ubuntu 20.04",
-          status: "running"
-        },
-        {
-          name: "Machine B",
-          flavor: "t3.medium",
-          operatingSystem: "Windows Server 2019",
-          status: "stopped"
-        },
-        {
-          name: "Machine C",
-          flavor: "m5.large",
-          operatingSystem: "CentOS 8",
-          status: "running"
-        },
-        {
-          name: "Machine D",
-          flavor: "c5.xlarge",
-          operatingSystem: "Debian 10",
-          status: "pending"
-        }
-      ];
-      setMachines(machines)
+
+
+      navigate("/createmachine")
     }
+    
 
     return (
     <Box as= 'main'
@@ -91,18 +91,18 @@ const MainPage = () => {
               </Heading>
         </Box>
       <div className='selections'>
-        <h1 className='button' onClick={handleClick}>REalizar comando ls</h1>
+        <h1 className='button' onClick={handleClick}>crear máquina</h1>
       </div>
       <Box display="flex" justifyContent="center">
         <TableContainer>
           <Table variant='simple'>
               <Thead>
                 <Tr>
-                  <Th>Nombre</Th>
-                  <Th>Flavor</Th>
-                  <Th>Sistema Operativo</Th>
-                  <Th>status</Th>
-                  <Th>options</Th>
+                  <Th textAlign="center">Nombre</Th>
+                  <Th textAlign="center">Flavor</Th>
+                  <Th textAlign="center">Sistema Operativo</Th>
+                  <Th textAlign="center">status</Th>
+                  <Th textAlign="center">options</Th>
                 </Tr>
               </Thead>
             <Tbody>
