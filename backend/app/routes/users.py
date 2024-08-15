@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
-from app.db import crud
+from app.db import user_crud
 from app.schemas.users import UserCreate  
 import uuid
 
@@ -23,11 +23,11 @@ def user_root():
 
 @router.post("/create_user/", response_model=None)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    return crud.create_user(db, user.email, user.password)
+    return user_crud.create_user(db, user.email, user.password)
 
 @router.post("/login/", response_model=None)
 def login(user: UserCreate, db: Session = Depends(get_db)):
-    user = crud.authenticate_user(db, user.email, user.password)
+    user = user_crud.authenticate_user(db, user.email, user.password)
     print(user)
     if not user:
         raise HTTPException(

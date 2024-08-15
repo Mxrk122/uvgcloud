@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContextProvider';
-import { Box, Heading, Text, Input, Button, FormControl, FormLabel, Image, VStack, Select, flexbox } from '@chakra-ui/react';
+import { Box, Heading, Text, Input, Button, FormControl, FormLabel, Image, VStack, Select, Spinner } from '@chakra-ui/react';
 import "../styles/main.css";
 
 const osOptions = [
   {
     id: 'ubuntu',
-    name: 'Ubuntu',
+    name: 'ubuntu',
     description: 'A popular Linux distribution.',
     imageUrl: 'https://example.com/ubuntu.png', // Reemplaza con la URL de la imagen de Ubuntu
   },
   {
     id: 'cirros',
-    name: 'Cirros',
+    name: 'cirros',
     description: 'A lightweight Linux distribution for testing.',
     imageUrl: 'https://example.com/cirros.png', // Reemplaza con la URL de la imagen de Cirros
   },
   {
     id: 'fedora',
-    name: 'Fedora',
+    name: 'fedora',
     description: 'A cutting-edge Linux distribution with latest features.',
     imageUrl: 'https://example.com/fedora.png', // Reemplaza con la URL de la imagen de Fedora
   },
@@ -31,38 +31,49 @@ const CreateMachine = () => {
 
     const [name, setName] = useState('');
     const [flavor, setFlavor] = useState('');
-    const [operatingSystem, setOperatingSystem] = useState('');
+    const [os, setOs] = useState('');
     const [result, setResult] = useState('');
     const [selectedOS, setSelectedOS] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // Redirección si el usuario no está autenticado
-    // useEffect(() => {
-    //   if (user === null) {
-    //     navigate("/login");
-    //   }
-    // }, [user, navigate]);
+    useEffect(() => {
+      // if (user === null) {
+      //   navigate("/login");
+      // }
+    }, [user, navigate]);
 
     const handleClick = async () => {
-      const response = await fetch('http://localhost:8080/commands/do_command', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          flavor,
-          operatingSystem,
-        }),
-      });
+      setIsLoading(true);
+      const owner = user.user_id
+      try {
+        const response = await fetch('http://localhost:8080/cloud_machines/create_machine', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            owner,
+            name,
+            flavor,
+            os,
+          }),
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        setResult(data);
-        console.log(data);
-      } else {
-        const errorData = await response.json();
-        console.log(errorData.detail);
-        setResult(`Error: ${errorData.detail}`);
+        if (response.ok) {
+          const data = await response.json();
+          setResult(data);
+          console.log(data);
+        } else {
+          const errorData = await response.json();
+          console.log(errorData.detail);
+          setResult(`Error: ${errorData.detail}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsLoading(false);
+        navigate("/main")
       }
     };
 
@@ -84,49 +95,58 @@ const CreateMachine = () => {
           <Box p={5} d='flex' flexDirection='column' alignItems='center' justifyContent='center'>
             <FormControl id='name' mb={3}>
               <FormLabel>Name</FormLabel>
-              <Input type='text' value={name} onChange={(e) => setName(e.target.value)} />
+              <Input type='text' value={name} onChange={(e) => setName(e.target.value)} disabled={isLoading} />
             </FormControl>
 
             <FormControl id='flavor' mb={3}>
               <FormLabel>Flavor</FormLabel>
-              <Select placeholder='Select flavor' value={flavor} onChange={(e) => setFlavor(e.target.value)}>
-                <option value='small'>Small</option>
-                <option value='medium'>Medium</option>
-                <option value='large'>Large</option>
+              <Select placeholder='Select flavor' value={flavor} onChange={(e) => setFlavor(e.target.value)} disabled={isLoading}>
+                <option value='m1.small'>Small</option>
+                <option value='m1.medium'>Medium</option>
+                <option value='m1.large'>Large</option>
               </Select>
             </FormControl>
 
             <FormLabel mb={3}>Operating System</FormLabel>
             <VStack spacing={4} display="flex" flexDirection="row">
-              {osOptions.map((os) => (
+              {osOptions.map((operativeSystem) => (
                 <Box
                   maxWidth={200}
                   maxHeight={150}
-                  key={os.id}
+                  key={operativeSystem.id}
                   p={4}
                   borderWidth={2}
-                  borderColor={selectedOS === os.id ? 'blue.500' : 'gray.200'}
+                  borderColor={selectedOS === operativeSystem.id ? 'blue.500' : 'gray.200'}
                   borderRadius='md'
                   boxShadow='md'
                   cursor='pointer'
                   onClick={() => {
-                    setSelectedOS(os.id);
-                    setOperatingSystem(os.id);
+                    setSelectedOS(operativeSystem.id);
+                    setOs(operativeSystem.name);
                   }}
                   transition='border-color 0.3s'
                   _hover={{ borderColor: 'blue.300' }}
+                  opacity={isLoading ? 0.5 : 1}
+                  pointerEvents={isLoading ? 'none' : 'auto'}
                 >
-                  <Image src={os.imageUrl} alt={os.name} objectFit='cover' mb={2} />
-                  <Text fontWeight='bold'>{os.name}</Text>
-                  <Text fontSize='sm' color='gray.600'>{os.description}</Text>
+                  <Image src={operativeSystem.imageUrl} alt={operativeSystem.name} objectFit='cover' mb={2} />
+                  <Text fontWeight='bold'>{operativeSystem.name}</Text>
+                  <Text fontSize='sm' color='gray.600'>{operativeSystem.description}</Text>
                 </Box>
               ))}
             </VStack>
 
-            <Button colorScheme='blue' onClick={handleClick} mt={4}>Create Machine</Button>
+            <Button colorScheme='blue' onClick={handleClick} mt={4} isLoading={isLoading} loadingText="Creating Machine">Create Machine</Button>
           </Box>
 
-          {result && (
+          {isLoading && (
+            <Box p={5} textAlign='center'>
+              <Spinner size='xl' />
+              <Text mt={2}>Espere por favor, su máquina está siendo creada</Text>
+            </Box>
+          )}
+
+          {result && !isLoading && (
             <Box p={5}>
               <Text fontSize='lg'>{result}</Text>
             </Box>

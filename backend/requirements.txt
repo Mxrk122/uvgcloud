@@ -6,3 +6,4 @@ alembic
 pydantic-settings
 pydantic
 bcrypt
+websockets

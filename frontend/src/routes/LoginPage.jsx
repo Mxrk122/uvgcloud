@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import DataBeatsLogo from '../assets/images/DataBeatsLogo.png'
+import DataBeatsLogo from '../assets/images/uvgcloudlogo.png'
 import { UserContext } from '../context/userContextProvider'
 import { 
   Box, 
@@ -59,13 +59,13 @@ const LoginPage = () => {
       align="center" 
       justify="center" 
       direction="column"
-      bgColor="#ffca38"
+      bgColor="#008F2E"
     >
       <Box w={["100%", "30%"]} p={8} rounded="lg" bg="white" boxShadow="dark-lg">
         <Stack spacing={8}>
           <Box className="login-icon-container" align="center" p={6}>
             <img src={DataBeatsLogo} alt="Data Beats Logo" width="80px" height="80px"/>
-            <Heading as="h1" textAlign="center" m={6}>¡Bienvenido a Data Beats!</Heading>
+            <Heading as="h1" textAlign="center" m={6}>¡Bienvenido a UVGCLOUD!</Heading>
           </Box>
           <FormControl>
             <FormLabel htmlFor="email" fontSize="lg" color="gray.600">Usuario</FormLabel>
@@ -108,7 +108,7 @@ const LoginPage = () => {
             rounded="lg"
             fontSize="lg"
             bg="grey.200"
-            _hover={{ bg: "yellow.500" }}
+            _hover={{ bg: "#008F2E", fontcolor: "white" }}
             _active={{ bg: "yellow.700" }}>Iniciar Sesión</Button>
           
           <Text textAlign="center" mt={8} fontSize="sm" color="gray.500">

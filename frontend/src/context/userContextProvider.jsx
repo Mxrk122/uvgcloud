@@ -12,7 +12,8 @@ const  UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    console.log(user)
+    console.log("información del usuario")
+    console.log(user?.user_id)
     }, [user])
 
   // Retorna el contexto con el usuario y la función para actualizar el usuario

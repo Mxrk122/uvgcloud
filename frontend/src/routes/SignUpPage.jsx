@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Box, FormControl, FormLabel, Input, Button, Flex, Image, Text } from '@chakra-ui/react'
-import DataBeatsLogo from '../assets/images/DataBeatsLogo.png'
+import DataBeatsLogo from '../assets/images/uvgcloudlogo.png'
 
 
 const SignUpPage = () => {
@@ -43,7 +43,7 @@ const SignUpPage = () => {
       w="100vw" 
       align="center" 
       justify="center" 
-      bgColor="#ffca38"
+      bgColor="#008F2E"
     >
       <Box
       bg="white"
@@ -114,7 +114,7 @@ const SignUpPage = () => {
     rounded="lg"
     fontSize="lg"
     bg="grey.200"
-    _hover={{ bg: "yellow.500" }}
+    _hover={{ bg: "#008F2E" }}
     _active={{ bg: "yellow.700" }}>
       Regístrate
     </Button>

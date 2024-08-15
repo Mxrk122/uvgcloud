@@ -19,6 +19,7 @@
     "react": "^18.2.0",
     "react-admin": "^4.7.4",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.2.1",
     "react-router-dom": "^6.8.0",
     "sass": "^1.57.1"
   },

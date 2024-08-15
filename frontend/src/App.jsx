@@ -4,6 +4,7 @@ import MainPage from './routes/MainPage'
 import LoginPage from './routes/LoginPage'
 import SignUpPage from './routes/SignUpPage'
 import CreateMachine from './routes/CreateMachine'
+import EditMachinePage from './routes/EditMachine'
 
 const App = () => {
   
@@ -11,8 +12,9 @@ const App = () => {
     <Route path="/" element={<LoginPage />} />
     <Route path="/main" element={<MainPage />} />
     <Route path="/login" element={<LoginPage />} />
-    <Route path="/signup" element={<SignUpPage />} />
+    <Route path="/sign-up" element={<SignUpPage />} />
     <Route path="/createmachine" element={<CreateMachine />} />
+    <Route path="/editmachine" element={<EditMachinePage />} />
 
   </Routes>)
 }
