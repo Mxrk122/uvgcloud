@@ -22,14 +22,15 @@ def user_root():
 
 @router.post("/create_machine/", response_model=None)
 def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
-    command = ['microstack', 'launch', machine.os, '-n', machine.name, "-f", machine.flavor]
+    machine_id = str(uuid.uuid4())
+    command = ['microstack', 'launch', machine.os, '-n', machine_id, "-f", machine.flavor]
     try:
         result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         print("Output:\n", result.stdout)
 
         # listar la maquina en la base de datos
         machine = cloud_machine_crud.create_cloud_machine(
-            db, machine.owner, machine.name, machine.flavor, machine.os, "new"
+            db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new"
         )
 
         return result.stdout

@@ -8,13 +8,14 @@ import "../styles/main.css";
 const MainPage = () => {
   const navigate = useNavigate();
   const { user } = React.useContext(UserContext);
+  const [machines, setMachines] = useState([]);
 
-  const [machines, setMachines] = useState([
+  const machines_example = [
     { vm_name: "Machine A", vm_size: "t2.micro", os: "Ubuntu 20.04", status: "running" },
     { vm_name: "Machine B", vm_size: "t3.medium", os: "Windows Server 2019", status: "stopped" },
     { vm_name: "Machine C", vm_size: "m5.large", os: "CentOS 8", status: "running" },
     { vm_name: "Machine D", vm_size: "c5.xlarge", os: "Debian 10", status: "pending" }
-  ]);
+  ]
 
   const [viewMode, setViewMode] = useState('list');
 
@@ -34,6 +35,7 @@ const MainPage = () => {
             setMachines(data);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
+            setMachines([])
         }
     };
 
