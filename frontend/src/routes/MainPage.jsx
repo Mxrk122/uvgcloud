@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContextProvider';
 import { Box, Heading, Text, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Button, Grid, GridItem, IconButton, VStack, HStack } from '@chakra-ui/react';
-import { FaTh, FaList } from 'react-icons/fa';
-import "../styles/main.css";
+import { FaTh, FaList, FaStop } from 'react-icons/fa';
+import { MdEdit, MdDelete  } from "react-icons/md";
+import CustomButton from '../Components/CustomButton';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -35,19 +36,24 @@ const MainPage = () => {
             setMachines(data);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            setMachines([])
+            setMachines(machines_example)
         }
     };
 
     fetchMachines();
 }, [navigate, user])
 
-  const handleClick = () => {
+  const handleCreateMachine = () => {
     navigate("/createmachine");
   };
 
+  const handleEditMachine = (machineId) => {
+    navigate(`/edit-machine/${machineId}`);
+  };
+
   return (
-    <Box as='main' w='100%' h='100%'>
+    <Box as='main' w='100%' h='100%' display='flex' flexDirection='column' alignItems='center'
+    justifyContent='center'>
       <Box mt='30px' p='5' d='flex' alignItems='center' justifyContent='center' flexDirection='column'>
         <Heading as='h1' fontSize='3xl' fontWeight='bold' textAlign='center' mb='5'>
           UVG CLOUD
@@ -55,7 +61,7 @@ const MainPage = () => {
       </Box>
 
       <HStack justifyContent="center" mb={5}>
-        <Button onClick={handleClick}>Crear Máquina</Button>
+        <CustomButton w='fit-content' onClick={handleCreateMachine}>Crear Máquina</CustomButton>
         <IconButton icon={<FaList />} onClick={() => setViewMode('list')} aria-label="List View" />
         <IconButton icon={<FaTh />} onClick={() => setViewMode('grid')} aria-label="Grid View" />
       </HStack>
@@ -81,9 +87,9 @@ const MainPage = () => {
                     <Td>{machine.os}</Td>
                     <Td>{machine.status}</Td>
                     <Td>
-                      <Button mr={2}>Editar</Button>
-                      <Button mr={2}>Apagar</Button>
-                      <Button>Eliminar</Button>
+                      <CustomButton fontSize={20} onClick={() => handleEditMachine(machine.id)}><MdEdit /></CustomButton>
+                      <CustomButton fontSize={15}><FaStop  /></CustomButton>
+                      <CustomButton fontSize={20}><MdDelete /></CustomButton>
                     </Td>
                   </Tr>
                 ))}
@@ -92,7 +98,7 @@ const MainPage = () => {
           </TableContainer>
         </Box>
       ) : (
-        <Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6} p={5}>
+        <Grid className="machines-grid" templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6} p={5}>
           {machines.map((machine, index) => (
             <GridItem key={index} borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
               <VStack>
@@ -101,9 +107,9 @@ const MainPage = () => {
                 <Text>OS: {machine.os}</Text>
                 <Text>Status: {machine.status}</Text>
                 <HStack>
-                  <Button size="sm" mr={2}>Editar</Button>
-                  <Button size="sm" mr={2}>Apagar</Button>
-                  <Button size="sm">Eliminar</Button>
+                  <CustomButton fontSize={20} onClick={() => handleEditMachine(machine.id)}><MdEdit /></CustomButton>
+                  <CustomButton fontSize={15}><FaStop  /></CustomButton>
+                  <CustomButton fontSize={20}><MdDelete /></CustomButton>
                 </HStack>
               </VStack>
             </GridItem>

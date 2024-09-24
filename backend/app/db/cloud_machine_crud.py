@@ -20,8 +20,27 @@ def get_cloud_machines(db: Session, user_id: uuid.UUID):
     return db.query(Cloud_Machine).filter(Cloud_Machine.owner == user_id).all()
 
 def get_cloud_machine(db: Session, machine_id: str):
-    return db.query(Cloud_Machine).filter(Cloud_Machine.id == machine_id)
+    return db.query(Cloud_Machine).filter(Cloud_Machine.id == machine_id).first()
 
 # UPDATE
+def update_cloud_machine(db: Session, machine_id: str, vm_name: str = None, vm_size: str = None, os: str = None):
+    # Obtener la máquina existente por su ID
+    db_cloud_machine = db.query(Cloud_Machine).filter(Cloud_Machine.id == machine_id).first()
+
+    if not db_cloud_machine:
+        return None  # Si no se encuentra la máquina, retornar None o lanzar una excepción
+
+    # Actualizar los campos solo si se pasan nuevos valores
+    if vm_name != None:
+        db_cloud_machine.vm_name = vm_name
+    # if vm_size:
+    #     db_cloud_machine.vm_size = vm_size
+    # if os:
+    #     db_cloud_machine.os = os
+
+    # Commit para guardar los cambios
+    db.commit()
+    db.refresh(db_cloud_machine)  # Refrescar la instancia para obtener los valores actualizados
+    return db_cloud_machine
 
 # DELETE

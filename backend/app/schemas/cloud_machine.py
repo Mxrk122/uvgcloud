@@ -5,3 +5,8 @@ class MachineCreate(BaseModel):
     name: str
     flavor: str
     os: str
+
+class MachineEdit(BaseModel):
+    name: str
+    flavor: str
+    os: str

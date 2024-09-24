@@ -5,17 +5,12 @@
     align-items: center;
 }
 
-.button{
-    background-color: blue;
-    font-size: 40px;
+.machines-grid {
+    width: 80%;
 }
 
-.button{
-    background-color: blue;
-    font-size: 40px;
-}
-
-.button:hover {
-    background-color: darkblue;
-    color: yellow;
+@media (max-width: 1000px){
+    .machines-grid {
+        width: 100%;
+    }
 }
