@@ -3,7 +3,7 @@ db_data
 node_modules
 __pycache__
 Bitacora
-images
+backend/images
 
 # Logs
 logs
