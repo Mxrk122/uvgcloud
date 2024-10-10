@@ -23,6 +23,9 @@ const LoginPage = () => {
   const { setUser } = React.useContext(UserContext)
   const navigate = useNavigate()
 
+   // Obtén la URL del backend de las variables de entorno
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -31,7 +34,7 @@ const LoginPage = () => {
       password
     }
 
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/login/`, {
+    const response = await fetch(`${backendUrl}/users/login/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

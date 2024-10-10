@@ -24,6 +24,9 @@ const osOptions = [
   },
 ];
 
+ // Obtén la URL del backend de las variables de entorno
+ const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const CreateMachine = () => {
     const navigate = useNavigate();
     const { user } = React.useContext(UserContext);
@@ -46,7 +49,7 @@ const CreateMachine = () => {
       setIsLoading(true);
       const owner = user.user_id
       try {
-        const response = await fetch(`${process.env.VITE_BACKEND_URL}/cloud_machines/create_machine`, {
+        const response = await fetch(`${backendUrl}/cloud_machines/create_machine`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
