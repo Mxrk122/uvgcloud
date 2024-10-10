@@ -5,7 +5,7 @@ import { Box, Heading, Text, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Bu
 import { FaTh, FaList, FaStop } from 'react-icons/fa';
 import { MdEdit, MdDelete  } from "react-icons/md";
 import CustomButton from '../Components/CustomButton';
-import NoMachinesLogo from '../assets/images/no-machines.png'
+import NoMachinesLogo from '../assets/images/error.png'
 
 const MainPage = () => {
   const navigate = useNavigate();
