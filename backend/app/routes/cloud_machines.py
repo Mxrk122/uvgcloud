@@ -73,3 +73,42 @@ def edit_machine(
             detail="Internal error: no Cloud Machine founded"
         )
     return updated_cloud_machine
+
+@router.delete("/delete_machine/{machine_id}", response_model=None)
+def delete_machine(machine_id: str, db: Session = Depends(get_db)):
+    command = ['microstack.openstack', 'server', 'delete', machine_id]
+
+    print(command)
+    try:
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        print("Output:\n", result.stdout)
+
+    except subprocess.CalledProcessError as e:
+        print("Error:\n", e.stderr)
+        return e.stderr
+    
+    # Llamada a la función del CRUD para eliminar la máquina
+    deleted_machine = cloud_machine_crud.delete_cloud_machine(db, machine_id=machine_id)
+    
+    if not deleted_machine:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No cloud machine found to delete"
+        )
+    
+    return {"message": f"Machine {machine_id} deleted successfully"}
+
+@router.put("/reboot_machine/{machine_id}", response_model=None)
+def delete_machine(machine_id: str, db: Session = Depends(get_db)):
+    command = ['microstack.openstack', 'server', 'reboot', "--soft", machine_id]
+
+    print(command)
+    try:
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        print("Output:\n", result.stdout)
+
+    except subprocess.CalledProcessError as e:
+        print("Error:\n", e.stderr)
+        return e.stderr
+    
+    return {"message": f"Machine {machine_id} rebooted successfully"}

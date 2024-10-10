@@ -44,3 +44,14 @@ def update_cloud_machine(db: Session, machine_id: str, vm_name: str = None, vm_s
     return db_cloud_machine
 
 # DELETE
+def delete_cloud_machine(db: Session, machine_id: str):
+    # Buscar la máquina por su ID
+    machine_to_delete = db.query(Cloud_Machine).filter(Cloud_Machine.id == machine_id).first()
+    
+    # Si la máquina existe, la elimina
+    if machine_to_delete:
+        db.delete(machine_to_delete)
+        db.commit()  # Confirmar los cambios en la base de datos
+        return True  # Retorna True si fue eliminada exitosamente
+    else:
+        return False  # Retorna False si la máquina no fue encontrada

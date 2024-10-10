@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContextProvider';
 import { Box, Heading, Text, Input, Button, FormControl, FormLabel, Image, VStack, Select, Spinner } from '@chakra-ui/react';
-import "../styles/main.css";
+
 
 const osOptions = [
   {
@@ -20,7 +20,7 @@ const osOptions = [
   {
     id: 'fedora',
     name: 'fedora',
-    description: 'A cutting-edge Linux distribution with latest features.',
+    description: 'A cutting-edge Linux distribution.',
     imageUrl: 'https://example.com/fedora.png', // Reemplaza con la URL de la imagen de Fedora
   },
 ];
@@ -92,7 +92,7 @@ const CreateMachine = () => {
             </Heading>
           </Box>
           
-          <Box p={5} d='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+          <Box p={5} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
             <FormControl id='name' mb={3}>
               <FormLabel>Name</FormLabel>
               <Input type='text' value={name} onChange={(e) => setName(e.target.value)} disabled={isLoading} />
@@ -108,11 +108,11 @@ const CreateMachine = () => {
             </FormControl>
 
             <FormLabel mb={3}>Operating System</FormLabel>
-            <VStack spacing={4} display="flex" flexDirection="row">
+            <VStack spacing={4} display="flex" flexDirection="row" flexWrap="wrap" justifyContent='center'>
               {osOptions.map((operativeSystem) => (
                 <Box
-                  maxWidth={200}
-                  maxHeight={150}
+                  width={200}
+                  height={150}
                   key={operativeSystem.id}
                   p={4}
                   borderWidth={2}
@@ -128,8 +128,12 @@ const CreateMachine = () => {
                   _hover={{ borderColor: 'blue.300' }}
                   opacity={isLoading ? 0.5 : 1}
                   pointerEvents={isLoading ? 'none' : 'auto'}
+                  display='flex'
+                  flexDirection='column'
+                  alignItems='center'
                 >
-                  <Image src={operativeSystem.imageUrl} alt={operativeSystem.name} objectFit='cover' mb={2} />
+                  {/* <Image src={operativeSystem.imageUrl} alt={operativeSystem.name} objectFit='cover' mb={2} /> */}
+                  <div className="example-img"></div>
                   <Text fontWeight='bold'>{operativeSystem.name}</Text>
                   <Text fontSize='sm' color='gray.600'>{operativeSystem.description}</Text>
                 </Box>
@@ -152,11 +156,11 @@ const CreateMachine = () => {
             </Box>
           )}
 
-          <Box as='footer' w='auto' h='auto' p='10' bgColor="#ffca38">
+          {/* <Box as='footer' w='auto' h='auto' p='10' bgColor="#ffca38">
             <Text textAlign='center' fontSize='sm'>
-              DataBeats © 2023
+              UVGCLOUD © 2024
             </Text>
-          </Box>
+          </Box> */}
         </Box>
     );
 };

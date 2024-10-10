@@ -105,7 +105,7 @@ const EditMachine = () => {
         </Heading>
       </Box>
       
-      <Box p={5} d='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+      <Box p={5} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
         {isLoading ? (
           <Spinner size='xl' />
         ) : (
@@ -155,7 +155,7 @@ const EditMachine = () => {
 
       <Box as='footer' w='auto' h='auto' p='10' bgColor="#ffca38">
         <Text textAlign='center' fontSize='sm'>
-          UVGCLOUD ©
+          UVGCLOUD © 2024
         </Text>
       </Box>
     </Box>
