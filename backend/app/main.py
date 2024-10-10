@@ -17,6 +17,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:666",  # Agrega aquí la URL de tu frontend en React
+    "http://192.168.244.4:5173" #server ip
 ]
 
 app.add_middleware(
