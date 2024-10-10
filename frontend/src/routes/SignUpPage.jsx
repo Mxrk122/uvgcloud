@@ -11,6 +11,8 @@ const SignUpPage = () => {
 
   const navigate = useNavigate()
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const handleSignUp = async (event) => {
     event.preventDefault()
     if (password === confirmPassword) {
@@ -20,7 +22,7 @@ const SignUpPage = () => {
         password
       }
 
-      const response = await fetch('http://localhost:8080/users/create_user', {
+      const response = await fetch(`${backendUrl}/users/create_user/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
