@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContextProvider';
-import { Box, Heading, Text, Input, Button, FormControl, FormLabel, Image, VStack, Select, Spinner } from '@chakra-ui/react';
-
+import { Box, Heading, Text, Input, Button, FormControl, FormLabel, VStack, Select, Spinner } from '@chakra-ui/react';
 
 const osOptions = [
   {
     id: 'ubuntu',
     name: 'ubuntu',
     description: 'A popular Linux distribution.',
-    imageUrl: 'https://example.com/ubuntu.png', // Reemplaza con la URL de la imagen de Ubuntu
+    imageUrl: 'https://example.com/ubuntu.png',
   },
   {
     id: 'cirros',
     name: 'cirros',
     description: 'A lightweight Linux distribution for testing.',
-    imageUrl: 'https://example.com/cirros.png', // Reemplaza con la URL de la imagen de Cirros
+    imageUrl: 'https://example.com/cirros.png',
   },
   {
     id: 'fedora',
     name: 'fedora',
     description: 'A cutting-edge Linux distribution.',
-    imageUrl: 'https://example.com/fedora.png', // Reemplaza con la URL de la imagen de Fedora
+    imageUrl: 'https://example.com/fedora.png',
   },
 ];
 
@@ -36,8 +35,8 @@ const CreateMachine = () => {
     const [selectedOS, setSelectedOS] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    // Redirección si el usuario no está autenticado
     useEffect(() => {
+      // Redirección si el usuario no está autenticado
       // if (user === null) {
       //   navigate("/login");
       // }
@@ -47,7 +46,7 @@ const CreateMachine = () => {
       setIsLoading(true);
       const owner = user.user_id
       try {
-        const response = await fetch('http://localhost:8080/cloud_machines/create_machine', {
+        const response = await fetch(`${process.env.VITE_BACKEND_URL}/cloud_machines/create_machine`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -73,7 +72,7 @@ const CreateMachine = () => {
         console.error('Error:', error);
       } finally {
         setIsLoading(false);
-        navigate("/main")
+        navigate("/main");
       }
     };
 
@@ -132,8 +131,6 @@ const CreateMachine = () => {
                   flexDirection='column'
                   alignItems='center'
                 >
-                  {/* <Image src={operativeSystem.imageUrl} alt={operativeSystem.name} objectFit='cover' mb={2} /> */}
-                  <div className="example-img"></div>
                   <Text fontWeight='bold'>{operativeSystem.name}</Text>
                   <Text fontSize='sm' color='gray.600'>{operativeSystem.description}</Text>
                 </Box>
@@ -155,12 +152,6 @@ const CreateMachine = () => {
               <Text fontSize='lg'>{result}</Text>
             </Box>
           )}
-
-          {/* <Box as='footer' w='auto' h='auto' p='10' bgColor="#ffca38">
-            <Text textAlign='center' fontSize='sm'>
-              UVGCLOUD © 2024
-            </Text>
-          </Box> */}
         </Box>
     );
 };

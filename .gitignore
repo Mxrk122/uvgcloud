@@ -4,6 +4,7 @@ node_modules
 __pycache__
 Bitacora
 backend/images
+.env
 
 # Logs
 logs

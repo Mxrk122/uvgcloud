@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import DataBeatsLogo from '../assets/images/uvgcloudlogo.png'
 import { UserContext } from '../context/userContextProvider'
@@ -19,9 +19,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState()
   const [error, setError] = useState(null);
 
-  // Contexto para adquirir y proveer el usuario a las demas paginas
-  const { user, setUser } = React.useContext(UserContext)
-
+  // Contexto para adquirir y proveer el usuario a las demás páginas
+  const { setUser } = React.useContext(UserContext)
   const navigate = useNavigate()
 
   const handleLogin = async (event) => {
@@ -32,7 +31,7 @@ const LoginPage = () => {
       password
     }
 
-    const response = await fetch('http://localhost:8080/users/login/', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/login/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -42,7 +41,7 @@ const LoginPage = () => {
 
     if (response.ok) {
         const data = await response.json();
-        console.log("registro logrado!")
+        console.log("Registro logrado!");
         setUser(data)
         navigate("/main")
     } else {
@@ -50,7 +49,7 @@ const LoginPage = () => {
         console.log(errorData.detail)
         setError(errorData.detail);
     }
-};
+  };
 
   return (
     <Flex 
@@ -108,15 +107,22 @@ const LoginPage = () => {
             rounded="lg"
             fontSize="lg"
             bg="grey.200"
-            _hover={{ bg: "#008F2E", fontcolor: "white" }}
-            _active={{ bg: "yellow.700" }}>Iniciar Sesión</Button>
+            _hover={{ bg: "#008F2E", color: "white" }}
+            _active={{ bg: "yellow.700" }}>
+            Iniciar Sesión
+          </Button>
           
           <Text textAlign="center" mt={8} fontSize="sm" color="gray.500">
             ¿Aún no tienes una cuenta? <Link to="/sign-up">Regístrate</Link>
           </Text>
+
+          {error && (
+            <Text textAlign="center" mt={2} color="red.500">
+              {error}
+            </Text>
+          )}
         </Stack>
       </Box>
-      
     </Flex>
   );
 };

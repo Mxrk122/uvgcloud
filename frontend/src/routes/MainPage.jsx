@@ -25,15 +25,18 @@ const MainPage = () => {
 
   const [viewMode, setViewMode] = useState('list');
 
+  // Obtén la URL del backend de las variables de entorno
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     const fetchMachines = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/cloud_machines/get_machines/${user.user_id}`, {
+            const response = await fetch(`${backendUrl}/cloud_machines/get_machines/${user.user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            }); // <- Cierre del paréntesis aquí
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -41,12 +44,12 @@ const MainPage = () => {
             setMachines(machines_example);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            setMachines(machines_example)
+            setMachines(machines_example);
         }
     };
 
     fetchMachines();
-}, [navigate, user])
+}, [navigate, user, backendUrl]);
 
   const handleCreateMachine = () => {
     navigate("/createmachine");
@@ -60,9 +63,9 @@ const MainPage = () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar esta máquina?");
     
     if (confirmDelete) {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8080/cloud_machines/delete_machine/${machineId}`, {
+        const response = await fetch(`${backendUrl}/cloud_machines/delete_machine/${machineId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -77,7 +80,7 @@ const MainPage = () => {
       } catch (error) {
         console.error('Hubo un problema con la operación de eliminación:', error);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -85,9 +88,9 @@ const MainPage = () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas reiniciar esta máquina?");
     
     if (confirmDelete) {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8080/cloud_machines/reboot_machine/${machineId}`, {
+        const response = await fetch(`${backendUrl}/cloud_machines/reboot_machine/${machineId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -98,12 +101,11 @@ const MainPage = () => {
           throw new Error('Error al reiniciar la máquina');
         }
       } catch (error) {
-        console.error('Hubo un problema con la operación de eliminación:', error);
+        console.error('Hubo un problema con la operación de reinicio:', error);
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
-  
 
   return (
     <Box as='main' w='100%' h='100%' display='flex' flexDirection='column' alignItems='center'
@@ -186,7 +188,7 @@ const MainPage = () => {
                   </HStack>
                 </VStack>
               </GridItem>
-            ))}
+            ))} 
           </Grid>
         )}
         </>
@@ -194,11 +196,11 @@ const MainPage = () => {
 
       <Box as='footer' w='auto' h='auto' p='10'>
         <Text textAlign='center' fontSize='sm'>
-          UVGCLOUD © 2024
+          UVGCLOUD
         </Text>
       </Box>
     </Box>
   );
-}
+};
 
 export default MainPage;

@@ -9,9 +9,9 @@ const EditMachine = () => {
   const navigate = useNavigate();
   const { user } = React.useContext(UserContext);
 
-  const[originalName, setOriginalName] = useState('')
-  const[originalFlavor, setOriginalFlavor] = useState('')
-  const[originalOs, setOriginalOs] = useState('')
+  const [originalName, setOriginalName] = useState('');
+  const [originalFlavor, setOriginalFlavor] = useState('');
+  const [originalOs, setOriginalOs] = useState('');
 
   const [name, setName] = useState('');
   const [flavor, setFlavor] = useState('');
@@ -35,10 +35,10 @@ const EditMachine = () => {
     const fetchMachineData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8080/cloud_machines/get_machine/${machineId}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/cloud_machines/get_machine/${machineId}`);
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
+          console.log(data);
           setOriginalName(data.vm_name);
           setOriginalFlavor(data.vm_size);
           setOriginalOs(data.os);
@@ -58,9 +58,9 @@ const EditMachine = () => {
   // Manejo de la actualización de los datos de la máquina
   const handleUpdateClick = async () => {
     setIsLoading(true);
-    const id = machineId
+    const id = machineId;
     try {
-      const response = await fetch(`http://localhost:8080/cloud_machines/edit_machine/${machineId}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/cloud_machines/edit_machine/${machineId}`, {
         method: 'PUT', // O PATCH, dependiendo de la API
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const EditMachine = () => {
         body: JSON.stringify({
           name,
           flavor,
-          os
+          os,
         }),
       });
 
