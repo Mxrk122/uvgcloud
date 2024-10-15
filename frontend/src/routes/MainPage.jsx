@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContextProvider';
 import { Box, Heading, Text, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Button, Grid, GridItem, IconButton, VStack, HStack, Spinner } from '@chakra-ui/react';
 import { FaTh, FaList, FaStop } from 'react-icons/fa';
+import { IoReloadCircleSharp } from "react-icons/io5";
 import { MdEdit, MdDelete  } from "react-icons/md";
 import CustomButton from '../Components/CustomButton';
 import NoMachinesLogo from '../assets/images/error.png'
@@ -148,7 +149,6 @@ const MainPage = () => {
                     <Th textAlign="center">Nombre</Th>
                     <Th textAlign="center">Flavor</Th>
                     <Th textAlign="center">Sistema Operativo</Th>
-                    <Th textAlign="center">Status</Th>
                     <Th textAlign="center">Options</Th>
                   </Tr>
                 </Thead>
@@ -158,13 +158,12 @@ const MainPage = () => {
                       <Td>{machine.vm_name}</Td>
                       <Td>{machine.vm_size}</Td>
                       <Td>{machine.os}</Td>
-                      <Td>{machine.status}</Td>
                       <Td>
-                        <CustomButton fontSize={20} 
+                        <CustomButton fontSize={25} 
                         onClick={() => handleEditMachine(machine.id)}
                         disabled={isLoading}><MdEdit /></CustomButton>
-                        <CustomButton fontSize={15} onClick={() => handleRebootMachine(machine.id)}><FaStop  /></CustomButton>
-                        <CustomButton fontSize={20} onClick={() => handleDeleteMachine(machine.id)}><MdDelete /></CustomButton>
+                        <CustomButton fontSize={25} onClick={() => handleRebootMachine(machine.id)}><IoReloadCircleSharp  /></CustomButton>
+                        <CustomButton fontSize={25} onClick={() => handleDeleteMachine(machine.id)}><MdDelete /></CustomButton>
                       </Td>
                     </Tr>
                   ))}
@@ -180,11 +179,11 @@ const MainPage = () => {
                   <Heading as="h3" size="md">{machine.vm_name}</Heading>
                   <Text>Flavor: {machine.vm_size}</Text>
                   <Text>OS: {machine.os}</Text>
-                  <Text>Status: {machine.status}</Text>
+                  
                   <HStack width='100%' alignItems='center' justifyContent='center'>
-                    <CustomButton width={20} fontSize={15} onClick={() => handleEditMachine(machine.id)}><MdEdit /></CustomButton>
-                    <CustomButton width={20} fontSize={15}><FaStop  /></CustomButton>
-                    <CustomButton width={20} fontSize={15} onClick={() => handleDeleteMachine(machine.id)}><MdDelete /></CustomButton>
+                    <CustomButton width={20} fontSize={25} onClick={() => handleEditMachine(machine.id)}><MdEdit /></CustomButton>
+                    <CustomButton width={20} fontSize={25}><IoReloadCircleSharp  /></CustomButton>
+                    <CustomButton width={20} fontSize={25} onClick={() => handleDeleteMachine(machine.id)}><MdDelete /></CustomButton>
                   </HStack>
                 </VStack>
               </GridItem>

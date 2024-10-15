@@ -91,7 +91,7 @@ const EditMachine = () => {
   };
 
   return (
-    <Box as='main' w='100%' h='100%' p={5}>
+    <Box as='main' w='100%' h='100%' p={5} display="flex" flexDirection="column" alignItems="center">
       <Box
         mt='30px'
         p='5'
@@ -105,14 +105,23 @@ const EditMachine = () => {
         </Heading>
       </Box>
       
-      <Box p={5} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+      <Box w="50%" p={5} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
         {isLoading ? (
           <Spinner size='xl' />
         ) : (
           <>
             <FormControl id='name' mb={3}>
               <FormLabel>Nombre</FormLabel>
-              <Input type='text' placeholder={originalName + ' (nombre original)'} onChange={(e) => setName(e.target.value)} disabled={isLoading} />
+              <Input 
+                type='text'
+                placeholder={originalName + ' (nombre original)'}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isLoading} 
+                value={name} 
+                borderColor="green" // Borde verde en el Input
+                _hover={{ borderColor: "green" }} // Hover
+                _focus={{ borderColor: "green", boxShadow: "0 0 0 2px green" }} // Focus
+                />
             </FormControl>
 
             <FormControl id='flavor' mb={3}>
@@ -122,6 +131,9 @@ const EditMachine = () => {
                 value={originalFlavor}
                 onChange={(e) => setFlavor(e.target.value)}
                 disabled={isLoading}
+                borderColor="green" // Borde verde en el Input
+                _hover={{ borderColor: "green" }} // Hover
+                _focus={{ borderColor: "green", boxShadow: "0 0 0 2px green" }} // Focus
               >
                 <option value='m1.small'>Small</option>
                 <option value='m1.medium'>Medium</option>
@@ -135,11 +147,13 @@ const EditMachine = () => {
             </FormControl>
 
             <Button
-              colorScheme='blue'
               onClick={handleUpdateClick}
               mt={4}
               isLoading={isLoading}
               loadingText="Actualizando Máquina"
+              border="2px solid #008F2E"
+              _hover={{ bg: "#008F2E", color: "white" }}
+              _active={{ bg: "yellow.700" }}
             >
               Actualizar Máquina
             </Button>
@@ -153,7 +167,7 @@ const EditMachine = () => {
         )}
       </Box>
 
-      <Box as='footer' w='auto' h='auto' p='10' bgColor="#ffca38">
+      <Box as='footer' w='auto' h='auto' p='10'>
         <Text textAlign='center' fontSize='sm'>
           UVGCLOUD © 2024
         </Text>

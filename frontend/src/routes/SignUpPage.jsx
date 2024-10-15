@@ -109,14 +109,14 @@ const SignUpPage = () => {
     </FormControl>
     <Button 
     onClick={handleSignUp}
-    mt={1}
+    mt={8}
     w="100%"
     variantColor="yellow"
     variant="solid"
     rounded="lg"
     fontSize="lg"
-    bg="grey.200"
-    _hover={{ bg: "#008F2E" }}
+    border="2px solid #008F2E"
+    _hover={{ bg: "#008F2E", color: "white" }}
     _active={{ bg: "yellow.700" }}>
       Regístrate
     </Button>

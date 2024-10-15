@@ -80,7 +80,7 @@ const CreateMachine = () => {
     };
 
     return (
-        <Box as='main' w='100%' h='100%' p={5}>
+        <Box as='main' w='100%' h='100%' p={5} display="flex" flexDirection="column" alignItems="center">
           <Box
               mt='30px'
               p='5'
@@ -94,20 +94,43 @@ const CreateMachine = () => {
             </Heading>
           </Box>
           
-          <Box p={5} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
-            <FormControl id='name' mb={3}>
-              <FormLabel>Name</FormLabel>
-              <Input type='text' value={name} onChange={(e) => setName(e.target.value)} disabled={isLoading} />
-            </FormControl>
+          <Box w="50%" p={5} display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+          <FormControl 
+            id="name" 
+            mb={3} 
+          >
+            <FormLabel>Name</FormLabel>
+            <Input 
+              type="text" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              disabled={isLoading} 
+              borderColor="green" // Borde verde en el Input
+              _hover={{ borderColor: "green" }} // Hover
+              _focus={{ borderColor: "green", boxShadow: "0 0 0 2px green" }} // Focus
+            />
+          </FormControl>
 
-            <FormControl id='flavor' mb={3}>
-              <FormLabel>Flavor</FormLabel>
-              <Select placeholder='Select flavor' value={flavor} onChange={(e) => setFlavor(e.target.value)} disabled={isLoading}>
-                <option value='m1.small'>Small</option>
-                <option value='m1.medium'>Medium</option>
-                <option value='m1.large'>Large</option>
-              </Select>
-            </FormControl>
+          <FormControl 
+            id="flavor" 
+            mb={3} 
+          >
+            <FormLabel>Flavor</FormLabel>
+            <Select 
+              placeholder="Select flavor" 
+              value={flavor} 
+              onChange={(e) => setFlavor(e.target.value)} 
+              disabled={isLoading} 
+              borderColor="green" // Borde verde en el Select
+              _hover={{ borderColor: "green" }} // Hover
+              _focus={{ borderColor: "green", boxShadow: "0 0 0 2px green" }} // Focus
+            >
+              <option value="m1.small">Small</option>
+              <option value="m1.medium">Medium</option>
+              <option value="m1.large">Large</option>
+            </Select>
+          </FormControl>
+
 
             <FormLabel mb={3}>Operating System</FormLabel>
             <VStack spacing={4} display="flex" flexDirection="row" flexWrap="wrap" justifyContent='center'>
@@ -118,7 +141,7 @@ const CreateMachine = () => {
                   key={operativeSystem.id}
                   p={4}
                   borderWidth={2}
-                  borderColor={selectedOS === operativeSystem.id ? 'blue.500' : 'gray.200'}
+                  borderColor={selectedOS === operativeSystem.id ? '#008F2E' : 'gray.200'}
                   borderRadius='md'
                   boxShadow='md'
                   cursor='pointer'
@@ -140,7 +163,20 @@ const CreateMachine = () => {
               ))}
             </VStack>
 
-            <Button colorScheme='blue' onClick={handleClick} mt={4} isLoading={isLoading} loadingText="Creating Machine">Create Machine</Button>
+            <Button
+              onClick={handleClick}
+              mt={4}
+              isLoading={isLoading}
+              loadingText="Creating Machine"
+              w="200px"
+              variantColor="yellow"
+              variant="solid"
+              rounded="lg"
+              fontSize="lg"
+              border="2px solid #008F2E"
+              _hover={{ bg: "#008F2E", color: "white" }}
+              _active={{ bg: "yellow.700" }}>
+                Create Machine</Button>
           </Box>
 
           {isLoading && (

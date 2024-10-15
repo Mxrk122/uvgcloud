@@ -109,7 +109,7 @@ const LoginPage = () => {
             variant="solid"
             rounded="lg"
             fontSize="lg"
-            bg="grey.200"
+            border="2px solid #008F2E"
             _hover={{ bg: "#008F2E", color: "white" }}
             _active={{ bg: "yellow.700" }}>
             Iniciar Sesión
