@@ -16,6 +16,7 @@ app = FastAPI()
 # Configurar CORS
 origins = [
     "http://localhost",
+    "http://localhost:5173",
     "http://localhost:666",  # Agrega aquí la URL de tu frontend en React
     "http://192.168.244.4:5173" #server ip
 ]

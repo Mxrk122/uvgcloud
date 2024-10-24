@@ -27,6 +27,7 @@ const LoginPage = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleLogin = async (event) => {
+    console.log(backendUrl)
     event.preventDefault();
 
     const user = {

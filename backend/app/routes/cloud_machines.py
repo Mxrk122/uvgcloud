@@ -6,6 +6,10 @@ from app.schemas.cloud_machine import MachineCreate, MachineEdit
 import subprocess
 import uuid
 
+import os
+
+
+
 router = APIRouter()
 
 # Dependencia para obtener la sesión de la base de datos
@@ -23,20 +27,38 @@ def user_root():
 @router.post("/create_machine/", response_model=None)
 def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
     machine_id = str(uuid.uuid4())
-    command = ['microstack', 'launch', machine.os, '-n', machine_id, "-f", machine.flavor]
-    try:
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-        print("Output:\n", result.stdout)
 
-        # listar la maquina en la base de datos
-        machine = cloud_machine_crud.create_cloud_machine(
-            db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new"
+    # Llama al script de Bash con los parámetros necesarios
+    script_path = os.path.join('sudo', os.path.dirname(__file__), 'createvm.sh')
+    bash_command = [script_path, machine_id, machine.flavor, machine.os]
+
+    
+
+    try:
+        # Ejecutar el script de Bash
+        port_result = subprocess.run(bash_command, 
+        capture_output=True,  # Captura stdout y stderr
+        text=True,  # Asegura que la salida se capture como una cadena
+        check=True  # Lanza una excepción si el script devuelve un error)
         )
 
-        return result.stdout
+        # Extraer el puerto de la salida del script
+        lines = port_result.stdout.splitlines()  # Divide la salida en líneas
+        port = lines[-1].strip() # Aquí tienes el puerto de la máquina
+
+        # Guardar la máquina y su puerto en la base de datos
+        machine_entry = cloud_machine_crud.create_cloud_machine(
+            db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new", #port
+        )
+
+        
+
+        # Devolver el puerto como respuesta
+        return {"machine_id": machine_id, "port": port}
+
     except subprocess.CalledProcessError as e:
         print("Error:\n", e.stderr)
-        return e.stderr
+        return {"error": str(e)}
     
 @router.get("/get_machines/{user_id}", response_model=None)
 def get_machines(user_id: uuid.UUID, db: Session = Depends(get_db)):
