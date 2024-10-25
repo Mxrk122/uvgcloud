@@ -18,8 +18,13 @@ if [ -z "$VM_IP" ]; then
   exit 1
 fi
 
-# 3. Generar un puerto aleatorio válido entre 1024 y 65535
-EXTERNAL_PORT=$((RANDOM % 64512 + 1024))
+# 3. Generar un puerto aleatorio válido entre 1024 y 65535, evitando el puerto 2222
+while true; do
+  EXTERNAL_PORT=$((RANDOM % 64512 + 1024))
+  if [ "$EXTERNAL_PORT" -ne 2222 ]; then
+    break
+  fi
+done
 
 # 4. Configurar Port Forwarding con iptables
 echo "Configurando iptables para la máquina con IP $VM_IP en el puerto $EXTERNAL_PORT..."
