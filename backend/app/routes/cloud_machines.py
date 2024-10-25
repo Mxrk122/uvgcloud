@@ -36,7 +36,7 @@ def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
 
     try:
         # Ejecutar el script de Bash
-        port_result = subprocess.run(bash_command, 
+        port_result = subprocess.run("sudo", bash_command, 
         capture_output=True,  # Captura stdout y stderr
         text=True,  # Asegura que la salida se capture como una cadena
         check=True  # Lanza una excepción si el script devuelve un error)
