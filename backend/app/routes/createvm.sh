@@ -4,7 +4,7 @@
 MACHINE_NAME="$1"   # Nombre de la máquina (primer parámetro)
 FLAVOR="$2"         # Flavor (segundo parámetro)
 IMAGE="$3"          # Imagen (tercer parámetro)
-BRIDGE_INTERFACE="br-ex"  # Interfaz de salida
+BRIDGE_INTERFACE="eno1"  # Interfaz de salida
 
 # 1. Crear la máquina virtual
 echo "Launching server..."
