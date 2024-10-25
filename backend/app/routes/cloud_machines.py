@@ -51,8 +51,7 @@ def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
             db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new", #port
         )
 
-        
-
+        print(port)
         # Devolver el puerto como respuesta
         return {"machine_id": machine_id, "port": port}
 

@@ -52,7 +52,7 @@ const CreateMachine = () => {
 
   const handleClick = async () => {
     setIsLoading(true);
-    const owner = user.user_id
+    const owner = user.user_id;
     try {
       const response = await fetch(`${backendUrl}/cloud_machines/create_machine`, {
         method: 'POST',
@@ -66,10 +66,10 @@ const CreateMachine = () => {
           os,
         }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        setResult(data);
+        setResult(data); // Guardas la respuesta completa en `result`
         setIsAlertOpen(true); // Abrir el diálogo cuando se haya creado la máquina
       } else {
         const errorData = await response.json();
@@ -82,6 +82,7 @@ const CreateMachine = () => {
       setIsLoading(false);
     }
   };
+  
 
   const handleNavigate = () => {
     navigate("/main");
@@ -207,8 +208,16 @@ const CreateMachine = () => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              {result ? `Tu máquina ha sido creada exitosamente: ${result}` : "Tu máquina ha sido creada."}
-            </AlertDialogBody>
+                {result ? (
+                  <>
+                    Tu máquina ha sido creada exitosamente. <br />
+                    ID de la máquina: {result.machine_id} <br />
+                    Puerto asignado: {result.port}
+                  </>
+                ) : (
+                  "Tu máquina ha sido creada."
+                )}
+              </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onCloseAlert}>
