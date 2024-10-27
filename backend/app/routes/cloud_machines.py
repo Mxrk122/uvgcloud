@@ -50,8 +50,7 @@ def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
             db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new", #port
         )
 
-        for i in lines:
-            print(lines)
+        print(lines)
 
         print(port)
         # Devolver el puerto como respuesta
