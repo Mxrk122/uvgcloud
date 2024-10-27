@@ -8,8 +8,8 @@ from app.models.cloud_machine import Cloud_Machine
 from app.utils.hashing import hash_password, verify_password
 
 # CREATE
-def create_cloud_machine(db: Session,id: str, owner: str, vm_name: str, vm_size: str, os: str, status: str) -> Cloud_Machine:
-    db_cloud_machine = Cloud_Machine(id=id, owner=owner, vm_name=vm_name, vm_size=vm_size, os=os, status=status)
+def create_cloud_machine(db: Session,id: str, owner: str, vm_name: str, vm_size: str, os: str, port: str) -> Cloud_Machine:
+    db_cloud_machine = Cloud_Machine(id=id, owner=owner, vm_name=vm_name, vm_size=vm_size, os=os, port=port)
     db.add(db_cloud_machine)
     db.commit()
     db.refresh(db_cloud_machine)

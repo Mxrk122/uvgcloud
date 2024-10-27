@@ -47,7 +47,7 @@ def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
 
         # Guardar la máquina y su puerto en la base de datos
         machine_entry = cloud_machine_crud.create_cloud_machine(
-            db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new", #port
+            db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, port
         )
 
         print(lines)

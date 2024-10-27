@@ -10,4 +10,4 @@ class Cloud_Machine(Base):
     vm_name = Column(String, index=True)
     vm_size = Column(String, index=True)
     os = Column(String, nullable=True)
-    status = Column(String, index=True)
+    port = Column(String, index=True)
