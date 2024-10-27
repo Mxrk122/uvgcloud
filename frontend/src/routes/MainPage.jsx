@@ -149,6 +149,7 @@ const MainPage = () => {
                     <Th textAlign="center">Nombre</Th>
                     <Th textAlign="center">Flavor</Th>
                     <Th textAlign="center">Sistema Operativo</Th>
+                    <Th textAlign="center">Dirección y puerto asignado</Th>
                     <Th textAlign="center">Options</Th>
                   </Tr>
                 </Thead>
@@ -158,6 +159,7 @@ const MainPage = () => {
                       <Td>{machine.vm_name}</Td>
                       <Td>{machine.vm_size}</Td>
                       <Td>{machine.os}</Td>
+                      <Td>{machine.port}</Td>
                       <Td>
                         <CustomButton fontSize={25} 
                         onClick={() => handleEditMachine(machine.id)}
