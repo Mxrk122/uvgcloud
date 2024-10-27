@@ -31,7 +31,6 @@ def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
     # Llama al script de Bash con los parámetros necesarios
     script_path = os.path.join('sudo', os.path.dirname(__file__), 'createvm.sh')
     bash_command = [script_path, machine_id, machine.flavor, machine.os]
-
     
 
     try:
@@ -50,6 +49,9 @@ def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
         machine_entry = cloud_machine_crud.create_cloud_machine(
             db, machine_id, machine.owner, machine.name, machine.flavor, machine.os, "new", #port
         )
+
+        for i in lines:
+            print(lines)
 
         print(port)
         # Devolver el puerto como respuesta
