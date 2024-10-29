@@ -125,8 +125,8 @@ const EditMachine = () => {
             </FormControl>
 
             <FormControl id='flavor' mb={3}>
-              <FormLabel>Flavor</FormLabel>
-              <Select
+              <FormLabel disabled >Flavor (No editable)</FormLabel>
+              {/* <Select
                 placeholder='Select flavor'
                 value={originalFlavor}
                 onChange={(e) => setFlavor(e.target.value)}
@@ -138,7 +138,7 @@ const EditMachine = () => {
                 <option value='m1.small'>Small</option>
                 <option value='m1.medium'>Medium</option>
                 <option value='m1.large'>Large</option>
-              </Select>
+              </Select> */}
             </FormControl>
 
             <FormControl id='os' mb={3}>

@@ -142,7 +142,7 @@ const MainPage = () => {
           <Box display="flex" justifyContent="center"
           opacity={isLoading ? 0.5 : 1}
           pointerEvents={isLoading ? 'none' : 'auto'}>
-            <TableContainer>
+            <TableContainer overflowX="scroll">
               <Table variant='simple'>
                 <Thead>
                   <Tr>
@@ -159,7 +159,7 @@ const MainPage = () => {
                       <Td>{machine.vm_name}</Td>
                       <Td>{machine.vm_size}</Td>
                       <Td>{machine.os}</Td>
-                      <Td>{machine.port}</Td>
+                      <Td>{machine.os}@123.456.789.10 {machine.port}</Td>
                       <Td>
                         <CustomButton fontSize={25} 
                         onClick={() => handleEditMachine(machine.id)}
@@ -181,6 +181,7 @@ const MainPage = () => {
                   <Heading as="h3" size="md">{machine.vm_name}</Heading>
                   <Text>Flavor: {machine.vm_size}</Text>
                   <Text>OS: {machine.os}</Text>
+                  <Text>{machine.os}@123.456.789.10 {machine.port}</Text>
                   
                   <HStack width='100%' alignItems='center' justifyContent='center'>
                     <CustomButton width={20} fontSize={25} onClick={() => handleEditMachine(machine.id)}><MdEdit /></CustomButton>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ubuntu from "../assets/images/ubuntu.png"
+import cirros from "../assets/images/cirros_logo.jpeg"
 import { UserContext } from '../context/userContextProvider';
 import { Box, Heading, Text, Input, Button, FormControl, FormLabel, VStack, Select, Spinner, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 
@@ -8,20 +10,22 @@ const osOptions = [
     id: 'ubuntu',
     name: 'ubuntu',
     description: 'A popular Linux distribution.',
-    imageUrl: 'https://example.com/ubuntu.png',
+    imageUrl: ubuntu,
+    defaultpw : 'ubuntu'
   },
   {
     id: 'cirros',
     name: 'cirros',
     description: 'A lightweight Linux distribution for testing.',
-    imageUrl: 'https://example.com/cirros.png',
+    imageUrl: cirros,
+    defaultpw : 'gocubsgo'
   },
-  {
-    id: 'fedora',
-    name: 'fedora',
-    description: 'A cutting-edge Linux distribution.',
-    imageUrl: 'https://example.com/fedora.png',
-  },
+  // {
+  //   id: 'fedora',
+  //   name: 'fedora',
+  //   description: 'A cutting-edge Linux distribution.',
+  //   imageUrl: 'https://example.com/fedora.png',
+  // },
 ];
 
  // Obtén la URL del backend de las variables de entorno
@@ -146,7 +150,7 @@ const CreateMachine = () => {
           {osOptions.map((operativeSystem) => (
             <Box
               width={200}
-              height={150}
+              height={200}
               key={operativeSystem.id}
               p={4}
               borderWidth={2}
@@ -166,8 +170,10 @@ const CreateMachine = () => {
               flexDirection='column'
               alignItems='center'
             >
+              <img src={operativeSystem.imageUrl} width={50}/>
               <Text fontWeight='bold'>{operativeSystem.name}</Text>
               <Text fontSize='sm' color='gray.600'>{operativeSystem.description}</Text>
+              <Text fontSize='sm' color='gray.600'>password: {operativeSystem.defaultpw}</Text>
             </Box>
           ))}
         </VStack>
