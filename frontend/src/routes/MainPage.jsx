@@ -42,10 +42,10 @@ const MainPage = () => {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            setMachines([]);
+            setMachines(data);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            setMachines(machines_example);
+            setMachines([]);
         }
     };
 
