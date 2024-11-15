@@ -66,7 +66,7 @@ const MainPage = () => {
             setMachines(data);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            setMachines(machines_example);
+            setMachines([]);
         }
     };
 
