@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import DataBeatsLogo from '../assets/images/uvgcloudlogo.png'
-import { UserContext } from '../context/userContextProvider'
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import DataBeatsLogo from '../assets/images/uvgcloudlogo.png';
+import { UserContext } from '../context/userContextProvider';
 import { 
   Box, 
   Input, 
@@ -12,46 +12,49 @@ import {
   FormControl, 
   FormLabel, 
   Stack 
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
-  // Contexto para adquirir y proveer el usuario a las demás páginas
-  const { setUser } = React.useContext(UserContext)
-  const navigate = useNavigate()
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-   // Obtén la URL del backend de las variables de entorno
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const handleLogin = async (event) => {
-    console.log(backendUrl)
     event.preventDefault();
 
     const user = {
       email,
       password
-    }
+    };
 
-    const response = await fetch(`${backendUrl}/users/login/`, {
+    try {
+      const response = await fetch(`${backendUrl}/users/login/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
-    });
+      });
 
-    if (response.ok) {
+      if (response.ok) {
         const data = await response.json();
-        console.log("Registro logrado!");
-        setUser(data)
-        navigate("/main")
-    } else {
+        setUser(data);
+        navigate('/main');
+      } else {
         const errorData = await response.json();
-        console.log(errorData.detail)
-        setError(errorData.detail);
+        if (response.status === 401) {
+          setError('Correo o contraseña incorrectos.');
+        } else {
+          setError(errorData.detail || 'Ocurrió un error. Intenta nuevamente.');
+        }
+      }
+    } catch (err) {
+      setError('No se pudo conectar con el servidor. Verifica tu conexión a internet.');
     }
   };
 
@@ -66,7 +69,7 @@ const LoginPage = () => {
     >
       <Box w={["100%", "30%"]} p={8} rounded="lg" bg="white" boxShadow="dark-lg">
         <Stack spacing={8}>
-          <Box className="login-icon-container" align="center" p={6}>
+          <Box align="center" p={6}>
             <img src={DataBeatsLogo} alt="Data Beats Logo" width="80px" height="80px"/>
             <Heading as="h1" textAlign="center" m={6}>¡Bienvenido a UVGCLOUD!</Heading>
           </Box>

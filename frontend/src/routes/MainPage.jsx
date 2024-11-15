@@ -5,8 +5,11 @@ import { Box, Heading, Text, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Bu
 import { FaTh, FaList, FaStop } from 'react-icons/fa';
 import { IoReloadCircleSharp } from "react-icons/io5";
 import { MdEdit, MdDelete  } from "react-icons/md";
+import { FaCopy } from "react-icons/fa6";
 import CustomButton from '../Components/CustomButton';
 import NoMachinesLogo from '../assets/images/error.png'
+import SSHGuide from '../Components/ConnectionInstructions';
+import { Tooltip } from '@chakra-ui/react';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -18,11 +21,29 @@ const MainPage = () => {
   const isEmpty = machines.length === 0;
 
   const machines_example = [
-    { vm_name: "Machine A", vm_size: "t2.micro", os: "Ubuntu 20.04", status: "running" },
-    { vm_name: "Machine B", vm_size: "t3.medium", os: "Windows Server 2019", status: "stopped" },
-    { vm_name: "Machine C", vm_size: "m5.large", os: "CentOS 8", status: "running" },
-    { vm_name: "Machine D", vm_size: "c5.xlarge", os: "Debian 10", status: "pending" }
+    { vm_name: "Machine A", vm_size: "t2.micro", os: "ubuntu", status: "running", port: "6666" },
+    { vm_name: "Machine B", vm_size: "t3.medium", os: "windowsserver", status: "stopped" },
+    { vm_name: "Machine C", vm_size: "m5.large", os: "ubuntu", status: "running" },
+    { vm_name: "Machine D", vm_size: "c5.xlarge", os: "debian", status: "pending" }
   ]
+
+  const getPasswordByOS = (os) => {
+    switch (os.toLowerCase()) {
+      case 'ubuntu':
+        return 'ubuntu';
+      case 'cirros':
+        return 'gocubsgo';
+      default:
+        return 'default_password'; // Contraseña predeterminada para otros sistemas operativos
+    }
+  };
+
+  // Redirección si el usuario no está autenticado
+  useEffect(() => {
+    if (user === null) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   const [viewMode, setViewMode] = useState('list');
 
@@ -45,7 +66,7 @@ const MainPage = () => {
             setMachines(data);
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            setMachines([]);
+            setMachines(machines_example);
         }
     };
 
@@ -108,6 +129,22 @@ const MainPage = () => {
     }
   };
 
+  // copiar y pegar automatico
+  const copyToClipboard = (os, port) => {
+    const sshCommand = `ssh ${os}@192.168.244.4 -p ${port}`;
+    navigator.clipboard.writeText(sshCommand)
+      .then(() => {
+        toast({
+          title: "Comando copiado",
+          description: "El comando SSH se ha copiado al portapapeles.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((err) => console.error('Error al copiar al portapapeles:', err));
+  };
+
   return (
     <Box as='main' w='100%' h='100%' display='flex' flexDirection='column' alignItems='center'
     justifyContent='center'>
@@ -117,11 +154,21 @@ const MainPage = () => {
         </Heading>
       </Box>
 
-      <HStack justifyContent="center" mb={5} opacity={isLoading ? 0.5 : 1}
+      <HStack justifyContent="center" alignItems="center" mb={5} opacity={isLoading ? 0.5 : 1}
         pointerEvents={isLoading ? 'none' : 'auto'}>
         <CustomButton w='fit-content' onClick={handleCreateMachine} disabled={isLoading}>Crear Máquina</CustomButton>
-        <IconButton icon={<FaList />} onClick={() => setViewMode('list')} aria-label="List View" />
-        <IconButton icon={<FaTh />} onClick={() => setViewMode('grid')} aria-label="Grid View" />
+        <Tooltip label="Vista de lista" fontSize="md">
+          <IconButton icon={<FaList />} onClick={() => setViewMode('list')} aria-label="List View" />
+        </Tooltip>
+
+        <Tooltip label="Vista de cards" fontSize="md">
+          <IconButton icon={<FaTh />} onClick={() => setViewMode('grid')} aria-label="Grid View" />
+        </Tooltip>
+
+        <Tooltip label="Guia de conexión" fontSize="md">
+          <IconButton icon={<SSHGuide />} aria-label="Guide" />
+        </Tooltip>
+
       </HStack>
 
       {isLoading && (
@@ -139,54 +186,70 @@ const MainPage = () => {
       ) : (
         <>
           {viewMode === 'list' ? (
-          <Box display="flex" justifyContent="center"
-          opacity={isLoading ? 0.5 : 1}
-          pointerEvents={isLoading ? 'none' : 'auto'}>
-            <TableContainer overflowX="scroll">
-              <Table variant='simple'>
-                <Thead>
-                  <Tr>
-                    <Th textAlign="center">Nombre</Th>
-                    <Th textAlign="center">Flavor</Th>
-                    <Th textAlign="center">Sistema Operativo</Th>
-                    <Th textAlign="center">Dirección y puerto asignado</Th>
-                    <Th textAlign="center">Options</Th>
+          <Box display="flex" justifyContent="center" w="100%" overflowX="auto" opacity={isLoading ? 0.5 : 1}
+              pointerEvents={isLoading ? 'none' : 'auto'}>
+          <TableContainer overflowX="auto" maxWidth="100%">
+            <Table variant='simple'>
+              <Thead>
+                <Tr>
+                  <Th textAlign="center">Nombre</Th>
+                  <Th textAlign="center">Flavor</Th>
+                  <Th textAlign="center">Sistema Operativo</Th>
+                  <Th textAlign="center">Password default</Th>
+                  <Th textAlign="center">Dirección y puerto asignado</Th>
+                  <Th textAlign="center">Options</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {machines.map((machine, index) => (
+                  <Tr key={index}>
+                    <Td>{machine.vm_name}</Td>
+                    <Td>{machine.vm_size}</Td>
+                    <Td>{machine.os}</Td>
+                    <Td textAlign="center">{getPasswordByOS(machine.os)}</Td>
+                    <Td>
+                      <Text>{machine.os}@192.168.244.4 {machine.port}</Text>
+                    </Td>
+                    <Td>
+                      <CustomButton fontSize={25} onClick={() => handleEditMachine(machine.id)} disabled={isLoading}>
+                        <MdEdit />
+                      </CustomButton>
+                      <CustomButton fontSize={25} onClick={() => handleRebootMachine(machine.id)}>
+                        <IoReloadCircleSharp />
+                      </CustomButton>
+                      <CustomButton fontSize={25} onClick={() => handleDeleteMachine(machine.id)}>
+                        <MdDelete />
+                      </CustomButton>
+                      <Tooltip label="Copiar comando ssh" fontSize="md" >
+                        <IconButton icon={<FaCopy />} onClick={() => copyToClipboard(machine.os, machine.port)}/>
+                      </Tooltip>
+                    </Td>
                   </Tr>
-                </Thead>
-                <Tbody>
-                  {machines.map((machine, index) => (
-                    <Tr key={index}>
-                      <Td>{machine.vm_name}</Td>
-                      <Td>{machine.vm_size}</Td>
-                      <Td>{machine.os}</Td>
-                      <Td>{machine.os}@123.456.789.10 {machine.port}</Td>
-                      <Td>
-                        <CustomButton fontSize={25} 
-                        onClick={() => handleEditMachine(machine.id)}
-                        disabled={isLoading}><MdEdit /></CustomButton>
-                        <CustomButton fontSize={25} onClick={() => handleRebootMachine(machine.id)}><IoReloadCircleSharp  /></CustomButton>
-                        <CustomButton fontSize={25} onClick={() => handleDeleteMachine(machine.id)}><MdDelete /></CustomButton>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
+        
         ) : (
           <Grid className="machines-grid" templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6} p={5}>
             {machines.map((machine, index) => (
-              <GridItem key={index} borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
+              <GridItem className="machine-grid" key={index} borderWidth="1px" borderRadius="lg" overflow="hidden" p={5}>
                 <VStack>
                   <Heading as="h3" size="md">{machine.vm_name}</Heading>
                   <Text>Flavor: {machine.vm_size}</Text>
                   <Text>OS: {machine.os}</Text>
+                  <Text>PW: {getPasswordByOS(machine.os)}</Text>
                   <Text>{machine.os}@123.456.789.10 {machine.port}</Text>
                   
                   <HStack width='100%' alignItems='center' justifyContent='center'>
+                    
                     <CustomButton width={20} fontSize={25} onClick={() => handleEditMachine(machine.id)}><MdEdit /></CustomButton>
                     <CustomButton width={20} fontSize={25}><IoReloadCircleSharp  /></CustomButton>
                     <CustomButton width={20} fontSize={25} onClick={() => handleDeleteMachine(machine.id)}><MdDelete /></CustomButton>
+                    <Tooltip label="Copiar comando ssh" fontSize="md">
+                      <IconButton icon={<FaCopy />} onClick={() => copyToClipboard(machine.os, machine.port)}/>
+                    </Tooltip>
                   </HStack>
                 </VStack>
               </GridItem>

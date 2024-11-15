@@ -48,10 +48,9 @@ const CreateMachine = () => {
   const cancelRef = React.useRef(); // referencia para el botón de cancelar
 
   useEffect(() => {
-    // Redirección si el usuario no está autenticado
-    // if (user === null) {
-    //   navigate("/login");
-    // }
+    if (user === null) {
+      navigate("/login");
+    }
   }, [user, navigate]);
 
   const handleClick = async () => {
@@ -77,7 +76,7 @@ const CreateMachine = () => {
         setIsAlertOpen(true); // Abrir el diálogo cuando se haya creado la máquina
       } else {
         const errorData = await response.json();
-        console.log(errorData.detail);
+        // console.log(errorData.detail);
         setResult(`Error: ${errorData.detail}`);
       }
     } catch (error) {

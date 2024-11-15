@@ -21,13 +21,13 @@ const EditMachine = () => {
 
   // Redirección si el usuario no está autenticado
   useEffect(() => {
-    // if (user === null) {
-    //   navigate("/login");
-    // }
+    if (user === null) {
+      navigate("/login");
+    }
   }, [user, navigate]);
 
   useEffect(() => {
-    console.log("Machine ID:", machineId); // Verifica si se está obteniendo correctamente el ID
+    // console.log("Machine ID:", machineId); // Verifica si se está obteniendo correctamente el ID
   }, [machineId]);
 
   // Obtener los datos de la máquina existente
@@ -38,7 +38,7 @@ const EditMachine = () => {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/cloud_machines/get_machine/${machineId}`);
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
           setOriginalName(data.vm_name);
           setOriginalFlavor(data.vm_size);
           setOriginalOs(data.os);
@@ -75,10 +75,10 @@ const EditMachine = () => {
       if (response.ok) {
         const data = await response.json();
         setResult('Máquina actualizada con éxito');
-        console.log(data);
+        // console.log(data);
       } else {
         const errorData = await response.json();
-        console.log(errorData.detail);
+        // console.log(errorData.detail);
         setResult(`Error: ${errorData.detail}`);
       }
     } catch (error) {
