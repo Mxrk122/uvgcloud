@@ -8,7 +8,7 @@ import { Box, Heading, Text, Input, Button, FormControl, FormLabel, VStack, Sele
 const osOptions = [
   {
     id: 'ubuntu',
-    name: 'ubuntu',
+    name: 'ubuntu-custom',
     description: 'A popular Linux distribution.',
     imageUrl: ubuntu,
     defaultpw : 'ubuntu'
